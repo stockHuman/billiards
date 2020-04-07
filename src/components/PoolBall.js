@@ -7,7 +7,7 @@ function PoolBall({ setRef, position, textureURL }) {
 
 	return (
 		<mesh ref={setRef} position={position} speed={new Vector2()} castShadow>
-			<sphereGeometry attach="geometry" args={[ 0.5, 128, 128 ]} />
+			<sphereGeometry attach="geometry" args={[ 0.5, 64, 64 ]} />
 			<meshStandardMaterial attach="material" color={0xffffff} roughness={0.25} metalness={0} map={ballTexture} />
 		</mesh>
 	)

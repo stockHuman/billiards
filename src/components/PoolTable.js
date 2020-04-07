@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { usePlane } from 'use-cannon'
 import {
 	TextureLoader,
 	RepeatWrapping,
@@ -12,6 +13,17 @@ import {
 
 import playAreaTextureURL from '../assets/textures/cloth.jpg'
 import edgeTextureUrl from '../assets/textures/hardwood_floor.jpg'
+
+function Plane({ color, ...props }) {
+  const [ref] = usePlane(() => ({ ...props }))
+  return (
+    <mesh ref={ref} receiveShadow>
+      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
+      <meshPhongMaterial attach="material" color={color} />
+    </mesh>
+  )
+}
+
 
 function PoolTable() {
 	const pocketPositions = [
@@ -120,8 +132,8 @@ function PoolTable() {
 					/>
 				)
 			})}
-		</object3D>
-	)
+			<Plane position={[-1,-1,-1]}/>
+		</object3D>	)
 }
 
 export default PoolTable

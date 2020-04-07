@@ -8,6 +8,7 @@ export default function App() {
 	return (
 		<Canvas
 			shadowMap
+			concurrent
 			sRGB
 			gl={{ clearColor: 0x151515, alpha: false }}>
 			<Scene />

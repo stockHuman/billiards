@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Cue({ setRef, cueRef, position }) {
+function Cue({ setRef = {}, cueRef = {}, position = [0,0,0] }) {
   return (
     <mesh
       ref={setRef}
@@ -21,10 +21,4 @@ Cue.propTypes = {
   position: PropTypes.arrayOf(PropTypes.any)
 };
 
-Cue.defaultProps = {
-  setRef: {},
-  cueRef: {},
-  position: [0, 0, 0]
-};
-
-export default Cue;
+export default Cue
