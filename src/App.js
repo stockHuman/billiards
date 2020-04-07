@@ -6,7 +6,10 @@ import Controls from './components/Controls'
 
 export default function App() {
 	return (
-		<Canvas>
+		<Canvas
+			shadowMap
+			sRGB
+			gl={{ clearColor: 0x151515, alpha: false }}>
 			<Scene />
 			<Controls
 				enableRotate
