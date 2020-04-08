@@ -1,28 +1,22 @@
 import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { TextureLoader, Vector2 } from 'three'
+import { TextureLoader } from 'three'
+import { useSphere } from 'use-cannon'
 
-function PoolBall({ setRef, position, textureURL }) {
+function PoolBall({ position=[0,0,0], textureURL = '' }) {
 	const ballTexture = useMemo(() => new TextureLoader().load(textureURL), [ textureURL ])
+	const [ ref ] = useSphere(() => ({
+		mass: 1,
+		position: position,
+		rotation: [ Math.random() * Math.PI, Math.random(), Math.random() ],
+		args: 0.5,
+	}))
 
 	return (
-		<mesh ref={setRef} position={position} speed={new Vector2()} castShadow>
+		<mesh ref={ref} position={position} castShadow>
 			<sphereGeometry attach="geometry" args={[ 0.5, 64, 64 ]} />
 			<meshStandardMaterial attach="material" color={0xffffff} roughness={0.25} metalness={0} map={ballTexture} />
 		</mesh>
 	)
-}
-
-PoolBall.propTypes = {
-	setRef: PropTypes.objectOf(PropTypes.any),
-	position: PropTypes.arrayOf(PropTypes.number),
-	textureURL: PropTypes.string,
-}
-
-PoolBall.defaultProps = {
-	setRef: {},
-	position: [],
-	textureURL: '',
 }
 
 export default PoolBall
