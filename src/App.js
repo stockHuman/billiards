@@ -10,6 +10,7 @@ export default function App() {
 			shadowMap
 			concurrent
 			sRGB
+			pixelRatio={window.devicePixelRatio}
 			gl={{ clearColor: 0x151515, alpha: false }}>
 			<Scene />
 			<Controls
