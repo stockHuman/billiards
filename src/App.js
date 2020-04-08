@@ -15,7 +15,7 @@ export default function App() {
 			<Scene />
 			<Controls
 				enableRotate
-				enablePan={false}
+				enablePan
 				maxDistance={100}
 				minDistance={5}
 				minPolarAngle={Math.PI / 6}
