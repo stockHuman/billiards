@@ -1,5 +1,4 @@
 import React, { useRef, Suspense } from 'react';
-import { useThree } from 'react-three-fiber';
 import { Physics } from 'use-cannon'
 
 import Light from '../components/Light';
@@ -31,26 +30,6 @@ function Scene() {
   const cueRef = useRef();
   const zeroBallRef = useRef();
 
-  const { camera } = useThree()
-
-  camera.fov = 45;
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.near = 0.1;
-  camera.far = 1000;
-
-  camera.up.set(0, 0, 1);
-  camera.position.set(-5, 7, 5);
-
-  (() => zeroBallRef.current && camera.lookAt(zeroBallRef.current.position))();
-  (() =>
-    zeroBallRef.current &&
-    camera.position.set(
-      zeroBallRef.current.position.x,
-      zeroBallRef.current.position.y,
-      45
-    ))();
-
-
   return (
     <>
       {Constants.pointLightPositions.map((pos, i) => {
@@ -76,7 +55,7 @@ function Scene() {
       <Physics gravity={[0,0,-9]}>
         <Suspense fallback={null}>
           <PoolTable setRef={poolTableRef} />
-           <PoolBall
+          <PoolBall
           position={[0, -16, 0]}
           textureURL={zero}
         />
