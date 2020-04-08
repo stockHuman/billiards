@@ -34,13 +34,9 @@ function PoolTable() {
 		[ -12, -24, 0 ],
 		[ 12, -24, 0 ],
 	]
-
 	const edgeSidePositions = [ [ -12.5, 12, 0.7 ], [ 12.5, 12, 0.7 ], [ -12.5, -12, 0.7 ], [ 12.5, -12, 0.7 ] ]
-
 	const edgeTopPositions = [ [ 0, 24.5, 0.7 ], [ 0, -24.5, 0.7 ] ]
-
 	const clothSidePositions = [ [ -12, 1, 0.2 ], [ 12, 1, 1.2 ], [ -12, -23, 0.2 ], [ 12, -23, 1.2 ] ]
-
 	const clothTopPositions = [ [ -11, 24, 0.2 ], [ 11, -24, 0.2 ] ]
 
 	const playAreaTexture = useMemo(() => new TextureLoader().load(playAreaTextureURL), [])
@@ -53,7 +49,7 @@ function PoolTable() {
 	const playAreaMaterial = new MeshStandardMaterial({
 		map: playAreaTexture,
 		color: 0x42a8ff,
-		roughness: 0.4,
+		roughness: 0.6,
 		metalness: 0,
 		bumpScale: 1,
 	})
@@ -91,13 +87,11 @@ function PoolTable() {
 					map={playAreaTexture}
 				/>
 			</mesh>
-			{edgeSidePositions.map((pos, i) => {
-				const idx = i
-				return <mesh key={idx} args={[ edgeSideGeometry, edgeMaterial ]} position={pos} />
-			})}
+			{edgeSidePositions.map((pos, i) =>
+				<mesh key={i} args={[ edgeSideGeometry, edgeMaterial ]} position={pos} />
+			)}
 			{edgeTopPositions.map((pos, i) => {
-				const idx = i
-				return <mesh key={idx} args={[ edgeTopGeometry, edgeMaterial ]} position={pos} />
+				return <mesh key={i} args={[ edgeTopGeometry, edgeMaterial ]} position={pos} />
 			})}
 			{clothSidePositions.map((pos, i) => {
 				const idx = i
