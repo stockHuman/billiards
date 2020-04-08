@@ -11,7 +11,7 @@ export default function App() {
 			concurrent
 			sRGB
 			pixelRatio={window.devicePixelRatio}
-			gl={{ clearColor: 0x151515, alpha: false }}>
+			gl={{ clearColor: 0x151515 }}>
 			<Scene />
 			<Controls
 				enableRotate
