@@ -16,7 +16,10 @@ import playAreaTextureURL from '../assets/textures/cloth.jpg'
 import edgeTextureUrl from '../assets/textures/hardwood_floor.jpg'
 
 function Floor({ ...props }) {
-	const [ ref ] = usePlane(() => ({ ...props }))
+	const [ ref ] = usePlane(() => ({
+		position: [0,0,-1],
+		args: props.args
+	 }))
 	const [ tex ] = useLoader(TextureLoader, [playAreaTextureURL])
 
 	tex.wrapS = RepeatWrapping
@@ -26,7 +29,7 @@ function Floor({ ...props }) {
 
 	return (
 		<mesh ref={ref} receiveShadow>
-			<boxBufferGeometry attach="geometry" args={props.args} />
+			<boxBufferGeometry attach="geometry" args={props.args}/>
 			<meshStandardMaterial
 					attach="material"
 					color={0x42a8ff}
