@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { usePlane } from 'use-cannon'
+import { useLoader } from 'react-three-fiber'
 import {
 	TextureLoader,
 	RepeatWrapping,
@@ -14,16 +15,29 @@ import {
 import playAreaTextureURL from '../assets/textures/cloth.jpg'
 import edgeTextureUrl from '../assets/textures/hardwood_floor.jpg'
 
-function Plane({ color, ...props }) {
-  const [ref] = usePlane(() => ({ ...props }))
-  return (
-    <mesh ref={ref} receiveShadow>
-      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
-      <meshPhongMaterial attach="material" color={color} />
-    </mesh>
-  )
-}
+function Floor({ ...props }) {
+	const [ ref ] = usePlane(() => ({ ...props }))
+	const [ tex ] = useLoader(TextureLoader, [playAreaTextureURL])
 
+	tex.wrapS = RepeatWrapping
+	tex.wrapT = RepeatWrapping
+	tex.offset.set(0, 0)
+	tex.repeat.set(3, 6)
+
+	return (
+		<mesh ref={ref} receiveShadow>
+			<boxBufferGeometry attach="geometry" args={props.args} />
+			<meshStandardMaterial
+					attach="material"
+					color={0x42a8ff}
+					roughness={0.4}
+					metalness={0}
+					bumpScale={1}
+					map={tex}
+				/>
+		</mesh>
+	)
+}
 
 function PoolTable() {
 	const pocketPositions = [
@@ -55,7 +69,6 @@ function PoolTable() {
 	})
 
 	const edgesTexture = useMemo(() => new TextureLoader().load(edgeTextureUrl), [])
-
 	const edgeSideGeometry = new BoxGeometry(1, 22, 1)
 	const edgeTopGeometry = new BoxGeometry(22, 1, 1)
 	const edgeMaterial = new MeshStandardMaterial({ map: edgesTexture })
@@ -68,66 +81,38 @@ function PoolTable() {
 	shape.lineTo(0, 0)
 
 	const extrudeSettings = { steps: 1, depth: 1, bevelEnabled: false }
-
 	const clothSideGeometry = new ExtrudeGeometry(shape, extrudeSettings)
-
 	const pocketGeometry = new CylinderGeometry(1, 1, 1.4, 20)
 	const pocketMaterial = new MeshBasicMaterial({ color: 0x000000 })
 
 	return (
-		<object3D position={[ 0, 0, -1 ]}>
-			<mesh receiveShadow>
-				<boxGeometry attach="geometry" args={[ 24, 48, 1 ]} />
-				<meshStandardMaterial
-					attach="material"
-					color={0x42a8ff}
-					roughness={0.4}
-					metalness={0}
-					bumpScale={1}
-					map={playAreaTexture}
-				/>
-			</mesh>
-			{edgeSidePositions.map((pos, i) =>
+		<object3D position={[0,0,-1]}>
+			<Floor args={[ 24, 48, 1 ]} position={[0,0,0]}/>
+			{edgeSidePositions.map((pos, i) => (
 				<mesh key={i} args={[ edgeSideGeometry, edgeMaterial ]} position={pos} />
-			)}
-			{edgeTopPositions.map((pos, i) => {
-				return <mesh key={i} args={[ edgeTopGeometry, edgeMaterial ]} position={pos} />
-			})}
-			{clothSidePositions.map((pos, i) => {
-				const idx = i
-				return (
-					<mesh
-						key={idx}
-						args={[ clothSideGeometry, playAreaMaterial ]}
-						position={pos}
-						rotation={idx === 1 || idx === 3 ? [ 0, 180 * Math.PI / 180, 0 ] : [ 0, 0, 0 ]}
-					/>
-				)
-			})}
-			{clothTopPositions.map((pos, i) => {
-				const idx = i
-				return (
-					<mesh
-						key={idx}
-						args={[ clothSideGeometry, playAreaMaterial ]}
-						position={pos}
-						rotation={idx === 0 ? [ 0, 0, -90 * Math.PI / 180, 0 ] : [ 0, 0, 90 * Math.PI / 180, 0 ]}
-					/>
-				)
-			})}
-			{pocketPositions.map((pos, i) => {
-				const idx = i
-				return (
-					<mesh
-						key={idx}
-						args={[ pocketGeometry, pocketMaterial ]}
-						position={pos}
-						rotation={[ 1.5708, 0, 0 ]}
-					/>
-				)
-			})}
-			<Plane position={[-1,-1,-1]}/>
-		</object3D>	)
+			))}
+			{edgeTopPositions.map((pos, i) => <mesh key={i} args={[ edgeTopGeometry, edgeMaterial ]} position={pos} />)}
+			{clothSidePositions.map((pos, i) => (
+				<mesh
+					key={i}
+					args={[ clothSideGeometry, playAreaMaterial ]}
+					position={pos}
+					rotation={i === 1 || i === 3 ? [ 0, 180 * Math.PI / 180, 0 ] : [ 0, 0, 0 ]}
+				/>
+			))}
+			{clothTopPositions.map((pos, i) => (
+				<mesh
+					key={i}
+					args={[ clothSideGeometry, playAreaMaterial ]}
+					position={pos}
+					rotation={i === 0 ? [ 0, 0, -90 * Math.PI / 180, 0 ] : [ 0, 0, 90 * Math.PI / 180, 0 ]}
+				/>
+			))}
+			{pocketPositions.map((pos, i) => (
+				<mesh key={i} args={[ pocketGeometry, pocketMaterial ]} position={pos} rotation={[ 1.5708, 0, 0 ]} />
+			))}
+		</object3D>
+	)
 }
 
 export default PoolTable
